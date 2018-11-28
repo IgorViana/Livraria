@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/activity_margin"
+    tools:context=".AddLivro">
+
+    <TextView
+        android:id="@+id/nameText"
+        style="@style/TextoPadrao"
+        android:text="@string/product_name" />
+
+    <TextView
+        android:id="@+id/priceText"
+        style="@style/TextoPadrao"
+        android:layout_below="@id/nameText"
+        android:text="@string/price" />
+
+    <TextView
+        android:id="@+id/quantityText"
+        style="@style/TextoPadrao"
+        android:layout_below="@id/priceText"
+        android:text="@string/quantity" />
+
+    <TextView
+        android:id="@+id/supplierNameText"
+        style="@style/TextoPadrao"
+        android:layout_below="@id/quantityText"
+        android:text="@string/supplier_name" />
+
+    <TextView
+        android:id="@+id/supplierPhoneText"
+        style="@style/TextoPadrao"
+        android:layout_below="@id/supplierNameText"
+        android:text="@string/supplier_phone_number" />
+
+    <EditText
+        android:id="@+id/book_name"
+        style="@style/EditorFieldStyle"
+        android:layout_alignBaseline="@id/nameText"
+        android:layout_toEndOf="@id/nameText"
+        android:layout_toRightOf="@id/nameText"
+        android:hint="@string/hint_product_name"
+        android:inputType="textCapWords" />
+
+    <EditText
+        android:id="@+id/book_price"
+        style="@style/EditorFieldStyle"
+        android:layout_alignBaseline="@id/priceText"
+        android:layout_toEndOf="@id/priceText"
+        android:layout_toRightOf="@id/priceText"
+        android:hint="@string/hint_price"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/book_quantity"
+        style="@style/EditorFieldStyle"
+        android:layout_alignBaseline="@id/quantityText"
+        android:layout_toEndOf="@id/quantityText"
+        android:layout_toRightOf="@id/quantityText"
+        android:hint="@string/hint_quantity"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/book_supplier_name"
+        style="@style/EditorFieldStyle"
+        android:layout_alignBaseline="@id/supplierNameText"
+        android:layout_toEndOf="@id/supplierNameText"
+        android:layout_toRightOf="@id/supplierNameText"
+        android:hint="@string/hint_supplier_name"
+        android:inputType="textCapWords" />
+
+    <EditText
+        android:id="@+id/book_supplier_phone"
+        style="@style/EditorFieldStyle"
+        android:layout_alignBaseline="@id/supplierPhoneText"
+        android:layout_toEndOf="@id/supplierPhoneText"
+        android:layout_toRightOf="@id/supplierPhoneText"
+        android:hint="@string/hint_supplier_phone_number"
+        android:inputType="number" />
+
+</RelativeLayout>

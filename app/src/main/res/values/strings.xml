@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Livraria</string>
+    <string name="product_name">Nome:</string>
+    <string name="price">Preço:</string>
+    <string name="quantity">Quantidade:</string>
+    <string name="supplier_name">Nome do Fornecedor:</string>
+    <string name="supplier_phone_number">Telefone do Fornecedor:</string>
+
+    <string name="hint_product_name">Nome</string>
+    <string name="hint_price">R$</string>
+    <string name="hint_quantity">0</string>
+    <string name="hint_supplier_name"> </string>
+    <string name="hint_supplier_phone_number">99 9999 9999</string>
+
+    <string name="action_save">Save</string>
+    <string name="add_book">Add a Book</string>
+</resources>
