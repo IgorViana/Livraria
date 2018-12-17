@@ -53,13 +53,22 @@ public class BookProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Cannot query unkown URI " + uri);
         }
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
 
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
-        return null;
+        final int match = uriMatcher.match(uri);
+        switch (match) {
+            case BOOKS:
+                return BookEntry.CONTENT_LIST_TYPE;
+            case BOOK_ID:
+                return BookEntry.CONTENT_ITEM_TYPE;
+            default:
+                throw new IllegalStateException("Unknown URI " + uri + " with match " + match);
+        }
     }
 
     @Nullable
@@ -73,6 +82,7 @@ public class BookProvider extends ContentProvider {
                 if (id == -1) {
                     return null;
                 }
+                getContext().getContentResolver().notifyChange(uri, null);
                 return ContentUris.withAppendedId(uri, id);
             default:
                 throw new IllegalArgumentException("Cannot insert a book with this uri: " + uri);
@@ -91,7 +101,11 @@ public class BookProvider extends ContentProvider {
                 selectionArgs = new String[]{
                         String.valueOf(ContentUris.parseId(uri))
                 };
-                return database.delete(BookEntry.TABLE_NAME, selection, selectionArgs);
+                int rowsDeleted = database.delete(BookEntry.TABLE_NAME, selection, selectionArgs);
+                if (rowsDeleted != -1) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+                return rowsDeleted;
             default:
                 throw new IllegalArgumentException("Cannot delete a book with this uri: " + uri);
         }
@@ -107,7 +121,11 @@ public class BookProvider extends ContentProvider {
                 selectionArgs = new String[]{
                         String.valueOf(ContentUris.parseId(uri))
                 };
-                return database.update(BookEntry.TABLE_NAME, values, selection, selectionArgs);
+                int rowsUpdate = database.update(BookEntry.TABLE_NAME, values, selection, selectionArgs);
+                if (rowsUpdate != -1) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+                return rowsUpdate;
             default:
                 throw new IllegalArgumentException("Cannot update a book with this uri: " + uri);
         }

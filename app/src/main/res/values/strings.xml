@@ -14,4 +14,13 @@
 
     <string name="action_save">Save</string>
     <string name="add_book">Add a Book</string>
+    <string name="BookInserted">Book Inserted</string>
+    <string name="error">An error ocurred during the operation</string>
+    <string name="incorretValues">Valores inseridos estao incorretos</string>
+    <string name="UsuarioTexto">Usuário</string>
+    <string name="NomeTexto">Nome</string>
+    <string name="PrecoTexto">Preço</string>
+    <string name="QuantidadeTexto">Quantidade</string>
+    <string name="FornecedorNomeTexto">Nome do Fornecedor</string>
+    <string name="FOrnecedorTelefoneTexto">Telefone do Fornecedor</string>
 </resources>

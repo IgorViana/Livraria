@@ -1,22 +1,31 @@
 package com.example.android.livraria;
 
+import android.app.LoaderManager;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
 import com.example.android.livraria.data.BookDbHelper;
 import com.example.android.livraria.data.BooksContract;
 import com.example.android.livraria.data.BooksContract.BookEntry;
+import com.example.android.livraria.entities.Book;
+
+import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, BookClickListener {
+    private static final int PET_LOADER = 0;
+    private BookCursorAdapter mAdapter;
 
-    private BookDbHelper mDbHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,60 +39,43 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        mDbHelper = new BookDbHelper(this);
-        displayDatabaseInfo();
+        RecyclerView list = findViewById(R.id.listaBooks);
+        mAdapter = new BookCursorAdapter(this, null, this);
+        list.setLayoutManager(new LinearLayoutManager(this));
+        list.setAdapter(mAdapter);
+        getLoaderManager().initLoader(PET_LOADER, null, this);
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        displayDatabaseInfo();
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        String[] projection = {
+                BookEntry._ID,
+                BookEntry.COLUMN_BOOK_NAME,
+                BookEntry.COLUMN_BOOK_QUANTITY,
+                BookEntry.COLUMN_BOOK_PRICE,
+        };
+
+        return new CursorLoader(this,
+                BookEntry.CONTENT_URI,
+                projection,
+                null, null, null);
     }
 
-    /**
-     * Temporary helper method to display information in the onscreen TextView about the state of
-     * the pets database.
-     */
-    private void displayDatabaseInfo() {
-        TextView displayView = (TextView) findViewById(R.id.text_view_book);
-        Cursor cursor = BookCrud.queryData(this);
-        try {
-            // Display the number of rows in the Cursor (which reflects the number of rows in the
-            // pets table in the database).
-            displayView.setText("The books table contains " + cursor.getCount() + " books.\n\n");
-            displayView.append(BookEntry._ID + " - "
-                    + BookEntry.COLUMN_BOOK_NAME + " - "
-                    + BookEntry.COLUMN_BOOK_PRICE + " - "
-                    + BookEntry.COLUMN_BOOK_QUANTITY + " - "
-                    + BookEntry.COLUMN_SUPPLIER_NAME + " - "
-                    + BookEntry.COLUMN_SUPPLIER_PHONE + "\n");
-
-            int idColumnIndex = cursor.getColumnIndex(BookEntry._ID);
-            int nameColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_NAME);
-            int priceColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_PRICE);
-            int quantityColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_QUANTITY);
-            int supNameColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_SUPPLIER_NAME);
-            int supPhoneColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_SUPPLIER_PHONE);
-
-            while (cursor.moveToNext()){
-                int currentId = cursor.getInt(idColumnIndex);
-                String currentName = cursor.getString(nameColumnIndex);
-                int currentPrice = cursor.getInt(priceColumnIndex);
-                int currentQuantity = cursor.getInt(quantityColumnIndex);
-                String currentSupName = cursor.getString(supNameColumnIndex);
-                int currentSupPhone = cursor.getInt(supPhoneColumnIndex);
-
-                displayView.append(("\n" + currentId + " - "
-                        + currentName + " - "
-                        + currentPrice + " - "
-                        + currentQuantity + " - "
-                        + currentSupName + " - "
-                        + currentSupPhone));
-            }
-        } finally {
-            // Always close the cursor when you're done reading from it. This releases all its
-            // resources and makes it invalid.
-            cursor.close();
-        }
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        mAdapter.changeCursor(cursor);
     }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mAdapter.changeCursor(null);
+        //TODO GET THE ADAPTER AND SWAP THE CURRENT CURSOR FOR A NEW ONE NULL
+    }
+
+    @Override
+    public void onBookSelected(int book) {
+
+    }
+
+
 }

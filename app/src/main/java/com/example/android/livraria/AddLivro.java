@@ -2,12 +2,15 @@ package com.example.android.livraria;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.android.livraria.data.BookDbHelper;
 import com.example.android.livraria.data.BooksContract;
@@ -20,6 +23,7 @@ public class AddLivro extends AppCompatActivity {
     private EditText bookQuantity;
     private EditText bookSupName;
     private EditText bookSupPhone;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,21 +36,34 @@ public class AddLivro extends AppCompatActivity {
         bookSupPhone = findViewById(R.id.book_supplier_phone);
     }
 
-    public void insertBook(){
+    public void insertBook() {
         String name = bookName.getText().toString().trim();
-        int price = Integer.parseInt(bookPrice.getText().toString().trim());
-        int quantity = Integer.parseInt(bookQuantity.getText().toString().trim());
+        String priceString = bookPrice.getText().toString().trim();
+        String quantityString = bookQuantity.getText().toString().trim();
+        String phoneString = bookSupPhone.getText().toString().trim();
         String supName = bookSupName.getText().toString().trim();
-        int phone = Integer.parseInt(bookSupPhone.getText().toString().trim());
+        //TODO CHECK
 
-        ContentValues value = new ContentValues();
-        value.put(BookEntry.COLUMN_BOOK_NAME, name);
-        value.put(BookEntry.COLUMN_BOOK_PRICE, price);
-        value.put(BookEntry.COLUMN_BOOK_QUANTITY, quantity);
-        value.put(BookEntry.COLUMN_SUPPLIER_NAME, supName);
-        value.put(BookEntry.COLUMN_SUPPLIER_PHONE, phone);
+        if (dadosValidos(name, priceString, quantityString, supName, phoneString)) {
+            int price = Integer.parseInt(priceString);
+            int quantity = Integer.parseInt(quantityString);
+            int phone = Integer.parseInt(phoneString);
 
-        BookCrud.insertData(this, value);
+            ContentValues value = new ContentValues();
+            value.put(BookEntry.COLUMN_BOOK_NAME, name);
+            value.put(BookEntry.COLUMN_BOOK_PRICE, price);
+            value.put(BookEntry.COLUMN_BOOK_QUANTITY, quantity);
+            value.put(BookEntry.COLUMN_SUPPLIER_NAME, supName);
+            value.put(BookEntry.COLUMN_SUPPLIER_PHONE, phone);
+
+            Uri newUri = getContentResolver().insert(BookEntry.CONTENT_URI, value);
+            if (newUri != null) {
+                Toast.makeText(this, getString(R.string.BookInserted), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT).show();
+            }
+        }
+        //BookCrud.insertData(this, value);
     }
 
 
@@ -72,5 +89,15 @@ public class AddLivro extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public boolean dadosValidos(String name, String price, String quantity, String supName, String phone) {
+        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(price) ||
+                TextUtils.isEmpty(quantity) || TextUtils.isEmpty(supName) ||
+                TextUtils.isEmpty(phone)) {
+            Toast.makeText(this, R.string.incorretValues, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 }

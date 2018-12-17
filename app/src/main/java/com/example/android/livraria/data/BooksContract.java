@@ -14,6 +14,8 @@ public class BooksContract {
 
     public static  final class BookEntry implements BaseColumns{
 
+        public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_BOOKS);
+
         public static final String CONTENT_LIST_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_BOOKS;
 
