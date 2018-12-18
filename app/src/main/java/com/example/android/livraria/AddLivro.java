@@ -47,7 +47,7 @@ public class AddLivro extends AppCompatActivity {
         if (dadosValidos(name, priceString, quantityString, supName, phoneString)) {
             int price = Integer.parseInt(priceString);
             int quantity = Integer.parseInt(quantityString);
-            int phone = Integer.parseInt(phoneString);
+            long phone = Long.parseLong(phoneString);
 
             ContentValues value = new ContentValues();
             value.put(BookEntry.COLUMN_BOOK_NAME, name);
@@ -63,7 +63,6 @@ public class AddLivro extends AppCompatActivity {
                 Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT).show();
             }
         }
-        //BookCrud.insertData(this, value);
     }
 
 

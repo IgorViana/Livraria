@@ -11,10 +11,6 @@ import com.example.android.livraria.data.BooksContract.BookEntry;
 
 public class BookCrud {
 
-    public BookCrud() {
-
-    }
-
     public static void insertData(Context context, ContentValues values) {
         BookDbHelper mDbHelper = new BookDbHelper(context);
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -36,8 +32,6 @@ public class BookCrud {
                 BookEntry.COLUMN_SUPPLIER_NAME,
                 BookEntry.COLUMN_SUPPLIER_PHONE,
         };
-
-        Cursor cursor = db.query(BookEntry.TABLE_NAME, projection, null, null, null, null, null);
-        return cursor;
+         return db.query(BookEntry.TABLE_NAME, projection, null, null, null, null, null);
     }
 }

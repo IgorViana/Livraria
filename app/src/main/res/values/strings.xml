@@ -42,4 +42,7 @@
     <string name="permissionDenied">Permission Denied</string>
     <string name="Sale">Sale</string>
     <string name="errorQuantity">Quantidade minima atingida</string>
+    <string name="add">+</string>
+    <string name="subtract">-</string>
+    <string name="minimumValue">Minimum value reached</string>
 </resources>

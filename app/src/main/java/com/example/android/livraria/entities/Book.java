@@ -27,10 +27,6 @@ public class Book {
         return quantity;
     }
 
-    public String getSupName() {
-        return supName;
-    }
-
     public int getPhone() {
         return phone;
     }

@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -41,6 +42,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     private EditText bookSupName;
     private EditText bookSupPhone;
     private ImageView phoneCall;
+    private Button addQuantityButton;
+    private Button subtractQuantityButton;
     private boolean mBookHasChanged = false;
     private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
         @Override
@@ -64,12 +67,16 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         bookSupName = findViewById(R.id.fornecedorNome);
         bookSupPhone = findViewById(R.id.fornecedorTelefone);
         phoneCall = findViewById(R.id.phoneCall);
+        addQuantityButton = findViewById(R.id.addQuantityBtn);
+        subtractQuantityButton = findViewById(R.id.subtractQuantityBtn);
 
         bookName.setOnTouchListener(mTouchListener);
         bookPrice.setOnTouchListener(mTouchListener);
         bookQuantity.setOnTouchListener(mTouchListener);
         bookSupName.setOnTouchListener(mTouchListener);
         bookSupPhone.setOnTouchListener(mTouchListener);
+        addQuantityButton.setOnTouchListener(mTouchListener);
+        subtractQuantityButton.setOnTouchListener(mTouchListener);
 
         phoneCall.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +92,28 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                             new String[]{Manifest.permission.CALL_PHONE},
                             MY_PERMISSIONS_REQUEST_CALL);
                 }
+            }
+        });
+
+        addQuantityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int quantity = Integer.parseInt(bookQuantity.getText().toString().trim());
+                quantity ++;
+                bookQuantity.setText(String.valueOf(quantity));
+            }
+        });
+
+        subtractQuantityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int quantity = Integer.parseInt(bookQuantity.getText().toString().trim());
+                if(quantity == 0){
+                    Toast.makeText(DetailActivity.this, getString(R.string.minimumValue), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                quantity --;
+                bookQuantity.setText(String.valueOf(quantity));
             }
         });
 
@@ -124,13 +153,13 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             int price = cursor.getInt(priceColumnIndex);
             int quantity = cursor.getInt(quantityColumnIndex);
             String supName = cursor.getString(supNameColumnIndex);
-            int supPhone = cursor.getInt(supPhoneColumnIndex);
+            long supPhone = cursor.getLong(supPhoneColumnIndex);
 
             bookName.setText(name);
             bookPrice.setText(Integer.toString(price));
             bookQuantity.setText(Integer.toString(quantity));
             bookSupName.setText(supName);
-            bookSupPhone.setText(Integer.toString(supPhone));
+            bookSupPhone.setText(Long.toString(supPhone));
         }
     }
 
@@ -185,7 +214,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public void onBackPressed() {
-        // Se o pet não mudou, continue lidando com clique do botão "back"
         if (!mBookHasChanged) {
             super.onBackPressed();
             return;
@@ -196,12 +224,10 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        // User clicou no botão "Discard", fecha a activity atual.
                         finish();
                     }
                 };
 
-        // Mostra o diálogo que diz que há mudanças não salvas
         showUnsavedChangesDialog(discardButtonClickListener);
     }
 
@@ -215,7 +241,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         if (dadosValidos(name, priceString, quantityString, supName, phoneString)) {
             int price = Integer.parseInt(priceString);
             int quantity = Integer.parseInt(quantityString);
-            int phone = Integer.parseInt(phoneString);
+            long phone = Long.parseLong(phoneString);
 
             ContentValues values = new ContentValues();
             values.put(BookEntry.COLUMN_BOOK_NAME, name);
