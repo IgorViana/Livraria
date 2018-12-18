@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import static com.example.android.livraria.data.BooksContract.CONTENT_AUTHORITY;
 import static com.example.android.livraria.data.BooksContract.PATH_BOOKS;
 
+import com.example.android.livraria.DetailActivity;
 import com.example.android.livraria.data.BooksContract.BookEntry;
 
 
@@ -25,7 +26,7 @@ public class BookProvider extends ContentProvider {
 
     static {
         uriMatcher.addURI(CONTENT_AUTHORITY, PATH_BOOKS, BOOKS);
-        uriMatcher.addURI(CONTENT_AUTHORITY, PATH_BOOKS + "#", BOOK_ID);
+        uriMatcher.addURI(CONTENT_AUTHORITY, PATH_BOOKS + "/#", BOOK_ID);
     }
 
     @Override
@@ -51,7 +52,7 @@ public class BookProvider extends ContentProvider {
                 cursor = database.query(BookEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
             default:
-                throw new IllegalArgumentException("Cannot query unkown URI " + uri);
+                throw new IllegalArgumentException("Cannot query unknown URI " + uri);
         }
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
@@ -122,8 +123,8 @@ public class BookProvider extends ContentProvider {
                         String.valueOf(ContentUris.parseId(uri))
                 };
                 int rowsUpdate = database.update(BookEntry.TABLE_NAME, values, selection, selectionArgs);
-                if (rowsUpdate != -1) {
-                    getContext().getContentResolver().notifyChange(uri, null);
+                if(rowsUpdate != -1){
+                    getContext().getContentResolver().notifyChange(uri,null);
                 }
                 return rowsUpdate;
             default:

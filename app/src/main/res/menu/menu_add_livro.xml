@@ -7,6 +7,6 @@
     <item
         android:id="@+id/action_save"
         android:title="@string/action_save"
-        android:icon="@drawable/baseline_check_black_18"
+        android:icon="@drawable/baseline_check_white_18"
         app:showAsAction="always" />
 </menu>

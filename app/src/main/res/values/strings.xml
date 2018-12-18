@@ -15,7 +15,7 @@
     <string name="action_save">Save</string>
     <string name="add_book">Add a Book</string>
     <string name="BookInserted">Book Inserted</string>
-    <string name="error">An error ocurred during the operation</string>
+    <string name="error">An error occurred during the operation</string>
     <string name="incorretValues">Valores inseridos estao incorretos</string>
     <string name="UsuarioTexto">Usuário</string>
     <string name="NomeTexto">Nome</string>
@@ -23,4 +23,23 @@
     <string name="QuantidadeTexto">Quantidade</string>
     <string name="FornecedorNomeTexto">Nome do Fornecedor</string>
     <string name="FOrnecedorTelefoneTexto">Telefone do Fornecedor</string>
+    <string name="ProdutoTexto">Produto</string>
+    <string name="FornecedorTexto">Fornecedor</string>
+    <string name="action_delete">Delete</string>
+    <string name="edit_book">Edit a book</string>
+    <string name="errorUpdating">Error in update</string>
+    <string name="updated">Row updated</string>
+    <string name="errorDeleting">Error while deleting</string>
+    <string name="deleted">Product was deleted</string>
+    <string name="delete_dialog_msg">Are you sure you want delete this?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="unsaved_changes_dialog_msg">If you exit changes will be lost</string>
+    <string name="discard">Discard</string>
+    <string name="keep_editing">Keep editing</string>
+    <string name="empty_view_title_text">No data</string>
+    <string name="empty_view_subtitle_text">Add new itens</string>
+    <string name="permissionDenied">Permission Denied</string>
+    <string name="Sale">Sale</string>
+    <string name="errorQuantity">Quantidade minima atingida</string>
 </resources>

@@ -10,4 +10,6 @@
     <!-- Common margin to TextoPadrao -->
     <dimen name="texto_padrao_padding">16dp</dimen>
 
+    <dimen name="divider_layout_height">1dp</dimen>
+
 </resources>

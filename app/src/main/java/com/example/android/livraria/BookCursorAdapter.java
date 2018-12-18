@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,7 +39,7 @@ public class BookCursorAdapter extends RecyclerView.Adapter<BookCursorAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
         //final Book currentBook = books.get;
         try {
             int nameColumn = books.getColumnIndexOrThrow(BooksContract.BookEntry.COLUMN_BOOK_NAME);
@@ -51,9 +52,12 @@ public class BookCursorAdapter extends RecyclerView.Adapter<BookCursorAdapter.Vi
             String price = books.getString(priceColumn);
             String quantity = books.getString(quantityColumn);
 
+            if(Integer.parseInt(quantity) <= 0){
+                quantity = "0";
+            }
 
             viewHolder.myBookName.setText(name);
-            viewHolder.myBookPrice.setText(price);
+            viewHolder.myBookPrice.setText("R$" + price);
             viewHolder.myBookQuantity.setText(quantity);
         }catch (Exception ex){
             Log.e("BOOKCURSORADAPTER", ex.toString());
@@ -62,7 +66,23 @@ public class BookCursorAdapter extends RecyclerView.Adapter<BookCursorAdapter.Vi
             @Override
             public void onClick(View view) {
                 if (bookClickListener != null) {
-                    bookClickListener.onBookSelected(viewHolder.getAdapterPosition());
+                    books.moveToPosition(viewHolder.getAdapterPosition());
+                    int idColumn = books.getColumnIndexOrThrow(BooksContract.BookEntry._ID);
+                    Long id = books.getLong(idColumn);
+                    bookClickListener.onBookSelected(id);
+                }
+            }
+        });
+
+        viewHolder.mySale.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (bookClickListener != null) {
+                    int quantityColumn = books.getColumnIndexOrThrow(BooksContract.BookEntry.COLUMN_BOOK_QUANTITY);
+                    books.moveToPosition(viewHolder.getAdapterPosition());
+                    int idColumn = books.getColumnIndexOrThrow(BooksContract.BookEntry._ID);
+                    Long id = books.getLong(idColumn);
+                    bookClickListener.onSaleSelected(id, Integer.parseInt(books.getString(quantityColumn)));
                 }
             }
         });
@@ -80,12 +100,14 @@ public class BookCursorAdapter extends RecyclerView.Adapter<BookCursorAdapter.Vi
         TextView myBookName;
         TextView myBookPrice;
         TextView myBookQuantity;
+        Button mySale;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             myBookName = itemView.findViewById(R.id.productName);
             myBookPrice = itemView.findViewById(R.id.productPrice);
             myBookQuantity = itemView.findViewById(R.id.productQuantity);
+            mySale = itemView.findViewById(R.id.saleButton);
         }
     }
 
@@ -112,7 +134,7 @@ public class BookCursorAdapter extends RecyclerView.Adapter<BookCursorAdapter.Vi
         final Cursor oldCursor = books;
         books = newCursor;
         if (books != null) {
-            //TODO OBSERVADOR
+            notifyDataSetChanged();
         }
         return oldCursor;
     }

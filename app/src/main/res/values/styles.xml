@@ -11,6 +11,7 @@
     <style name="TextoPadrao">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:color">@color/text</item>
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:paddingBottom">@dimen/texto_padrao_padding</item>
     </style>
@@ -19,6 +20,7 @@
     <style name="EditorFieldStyle">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
+        <item name="android:colorActivatedHighlight">@color/divider</item>
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textAppearance">?android:textAppearanceSmall</item>
     </style>

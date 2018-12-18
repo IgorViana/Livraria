@@ -84,7 +84,7 @@ public class AddLivro extends AppCompatActivity {
                 return true;
             // Respond to a click on the "Up" arrow button in the app bar
             case android.R.id.home:
-                // Navigate back to parent activity (CatalogActivity)
+                // Navigate back to parent activity (MainActivity)
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
         }
